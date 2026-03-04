@@ -2,13 +2,20 @@
 <html lang="en" xmlns::th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Человек</title>
+    <title>Person</title>
 </head>
 <body>
 
-<div >
+<div>
     <a th:text="${person.getName()}">value</a>
     <a th:text="${person.getId()}">value</a>
 </div>
+
+<br>
+<hr>
+
+<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a>
+<a th:href="@{/people/{id}/delete(id=${person.getId()})}">Delete</a>
+
 </body>
 </html>
