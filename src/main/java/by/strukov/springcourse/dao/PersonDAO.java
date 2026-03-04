@@ -32,4 +32,8 @@ public class PersonDAO {
                 .findAny()
                 .orElse(null);
     }
+
+    public void save(Person person){
+        people.add(new Person(++PEOPLE_COUNT, person.getName()));
+    }
 }

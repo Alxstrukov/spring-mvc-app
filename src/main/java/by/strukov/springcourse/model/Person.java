@@ -6,8 +6,16 @@ import lombok.Data;
 
 
 public class Person {
-    private int id;
+    private Integer id;
     private String name;
+
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Person() {
+    }
 
     public int getId() {
         return id;
@@ -22,11 +30,6 @@ public class Person {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public Person(int id, String name) {
-        this.id = id;
         this.name = name;
     }
 }
