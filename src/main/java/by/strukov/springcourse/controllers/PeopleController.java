@@ -20,7 +20,6 @@ public class PeopleController {
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("people", personDAO.index());
-        System.out.println("Зашел на people через метод index()");
         return "people/index";
     }
 
@@ -38,7 +37,8 @@ public class PeopleController {
     @PostMapping()
     public String create(@ModelAttribute("person") Person person) {
         personDAO.save(person);
-        System.out.println("Зашел на people через метод index() отправив метод POST через HTTP");
         return "redirect:/people";
     }
+
+
 }
