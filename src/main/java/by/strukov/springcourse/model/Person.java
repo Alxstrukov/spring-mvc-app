@@ -3,10 +3,12 @@ package by.strukov.springcourse.model;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Person {
     private Integer id;
 
@@ -21,7 +23,4 @@ public class Person {
     @NotEmpty(message = "Поле не может быть пустым")
     @Email(message = "Неправильный email")
     private String email;
-
-    public Person() {
-    }
 }

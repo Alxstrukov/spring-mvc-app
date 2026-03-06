@@ -52,6 +52,9 @@ dependencies {
     // Source: https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
     implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '9.1.0.Final'
 
+    // Source: https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.10'
+
 }
 
 test {

@@ -4,49 +4,89 @@ package by.strukov.springcourse.dao;
 import by.strukov.springcourse.model.Person;
 import org.springframework.stereotype.Component;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class PersonDAO {
-    private static int PEOPLE_COUNT = 0;
-    private List<Person> people;
+    private static final String URL = "jdbc:postgresql://localhost:5432/first_db";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "postgres";
+    private static Connection connection;
 
-    {
-        people = new ArrayList<>();
-        people.add(new Person(++PEOPLE_COUNT, "Katy", 27, "katrinv99@mail.ru"));
-        people.add(new Person(++PEOPLE_COUNT, "Alex", 32, "alxstrukov@mail.ru"));
-        people.add(new Person(++PEOPLE_COUNT, "Bob", 45, "bob@yahoo.com"));
-        people.add(new Person(++PEOPLE_COUNT, "Ivan", 42, "ivan@tut.by"));
-        people.add(new Person(++PEOPLE_COUNT, "Tom", 39, "tomikGomik@gmail.com"));
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Person> index() {
+        List<Person> people = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            String query = "select * from person";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                Person person = new Person();
+                person.setId(resultSet.getInt("id"));
+                person.setAge(resultSet.getInt("age"));
+                person.setName(resultSet.getString("name"));
+                person.setEmail(resultSet.getString("email"));
+                people.add(person);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return people;
     }
 
     public Person show(int id) {
-        return people.stream()
-                .filter(person -> person.getId() == id)
-                .findAny()
-                .orElse(null);
+        Person person = null;
+        try {
+            String query = "select * from person where id = ?";
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                person = new Person();
+                person.setId(resultSet.getInt("id"));
+                person.setAge(resultSet.getInt("age"));
+                person.setName(resultSet.getString("name"));
+                person.setEmail(resultSet.getString("email"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return person;
     }
 
     public void save(Person person) {
-        people.add(new Person(++PEOPLE_COUNT,
-                person.getName(),
-                person.getAge(),
-                person.getEmail()));
+        try {
+            String query = "INSERT INTO person (id, name, age, email) VALUES (1,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, person.getName());
+            preparedStatement.setInt(2, person.getAge());
+            preparedStatement.setString(3, person.getEmail());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void update(int id, Person personUpdated) {
-        Person updateablePerson = show(id);
-        updateablePerson.setName(personUpdated.getName());
-        updateablePerson.setAge(personUpdated.getAge());
-        updateablePerson.setEmail(personUpdated.getEmail());
+
     }
 
     public void delete(int id) {
-        people.removeIf(person -> person.getId() == id);
+
     }
 }
