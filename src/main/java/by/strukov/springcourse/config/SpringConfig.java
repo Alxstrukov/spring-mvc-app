@@ -71,7 +71,7 @@ public class SpringConfig implements WebMvcConfigurer {
 //        dataSource.setDriverClassName(environment.getProperty("driver"));
 //environment.getProperty("driver") - если драйвер не будет найден, то приложение не будет работать
         dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("spring.datasource.driver-class-name")));
-        //(Objects.requireNonNull(environment.getProperty("driver"))); - если драйвер не будет найден,
+        //(Objects.requireNonNull(environment.getProperty("spring.datasource.driver-class-name"))); - если драйвер не будет найден,
         // то кинет исключение NullPointerException
         dataSource.setUrl(environment.getProperty("spring.datasource.url"));
         dataSource.setUsername(environment.getProperty("spring.datasource.username"));

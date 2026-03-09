@@ -1,0 +1,6 @@
+//этот файл используется для того, чтобы другие разработчики клонировав код с гитхаб понимали,
+//какие данные нужно ввести чтобы пользоваться проектом
+spring.datasource.driver-class-name=
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
