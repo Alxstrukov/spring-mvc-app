@@ -24,8 +24,6 @@ public class PersonDAO {
     public List<Person> index() {
         String sql = "SELECT * FROM person";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Person.class));
-
-
     }
 
     public Person show(int id) {
@@ -61,8 +59,8 @@ public class PersonDAO {
         Long before = System.currentTimeMillis();
 
         for (Person person : people) {
-            jdbcTemplate.update("INSERT INTO person VALUES (?,?,?,?)",
-                    person.getId(),
+            jdbcTemplate.update("INSERT INTO person (name, age,email) VALUES (?,?,?)",
+//                    person.getId(),
                     person.getName(),
                     person.getAge(),
                     person.getEmail());
@@ -80,14 +78,14 @@ public class PersonDAO {
 
         long before = System.currentTimeMillis();
 
-        jdbcTemplate.batchUpdate("INSERT INTO person VALUES (?,?,?,?)",
+        jdbcTemplate.batchUpdate("INSERT INTO person (name, age,email) VALUES (?,?,?)",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setInt(1, people.get(i).getId());
-                        ps.setString(2, people.get(i).getName());
-                        ps.setInt(3, people.get(i).getAge());
-                        ps.setString(4, people.get(i).getEmail());
+//                        ps.setInt(1, people.get(i).getId());
+                        ps.setString(1, people.get(i).getName());
+                        ps.setInt(2, people.get(i).getAge());
+                        ps.setString(3, people.get(i).getEmail());
                     }
 
                     @Override
