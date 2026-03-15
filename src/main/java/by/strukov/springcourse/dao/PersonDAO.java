@@ -58,6 +58,11 @@ public class PersonDAO {
         jdbcTemplate.update(sql, id);
     }
 
+    public boolean isEqualsNewAndOldEmailAddress(int personID, String newEmail) {
+        Person person = show(personID);
+        return person.getEmail().equals(newEmail);
+    }
+
     /*
      * тестируем пакетное обновление данных (Batch Update)*/
 

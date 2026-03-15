@@ -58,20 +58,17 @@ public class PeopleController {
 
     @PatchMapping("/{id}")
     public String updatePerson(@PathVariable("id") int id,
-                               @ModelAttribute("person") @Valid Person person,
+                               @ModelAttribute("person") @Valid Person updatedPerson,
                                BindingResult bindingResult) {
 
-        if (!isEqualsNewAndOldEmailAddress(id, person.getEmail())) personValidator.validate(person, bindingResult);
+        if (!personDAO.isEqualsNewAndOldEmailAddress(id, updatedPerson.getEmail()))
+            personValidator.validate(updatedPerson, bindingResult);
 
         if (bindingResult.hasErrors()) return "people/edit";
-        personDAO.update(id, person);
+        personDAO.update(id, updatedPerson);
         return "redirect:/people";
     }
 
-    private boolean isEqualsNewAndOldEmailAddress(int id, String newEmail) {
-        Person oldRequiredPerson = personDAO.show(id);
-        return oldRequiredPerson.getEmail().equals(newEmail);
-    }
 
     @GetMapping("{id}/delete")
     public String deletePerson(@PathVariable("id") int id) {
