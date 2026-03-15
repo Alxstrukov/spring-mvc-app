@@ -61,11 +61,16 @@ public class PeopleController {
                                @ModelAttribute("person") @Valid Person person,
                                BindingResult bindingResult) {
 
-        personValidator.validate(person, bindingResult);
+        if (!isEqualsNewAndOldEmailAddress(id, person.getEmail())) personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors()) return "people/edit";
         personDAO.update(id, person);
         return "redirect:/people";
+    }
+
+    private boolean isEqualsNewAndOldEmailAddress(int id, String newEmail) {
+        Person oldRequiredPerson = personDAO.show(id);
+        return oldRequiredPerson.getEmail().equals(newEmail);
     }
 
     @GetMapping("{id}/delete")

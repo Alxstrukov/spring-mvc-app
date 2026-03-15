@@ -25,4 +25,8 @@ public class Person {
     @NotEmpty(message = "Поле не может быть пустым")
     @Email(message = "Неправильный email")
     private String email;
+
+    @Pattern(regexp = "[A-Z]\\w+, [A-Z]\\w+, \\d{6}",
+            message = "Адрес должен быть указан в формате: Страна, Город, Почтовый индекс (6 чисел)")
+    private String address;
 }
